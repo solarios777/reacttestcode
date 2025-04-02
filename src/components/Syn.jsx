@@ -1,26 +1,46 @@
-import React, { useState } from "react"
+import react, { useState } from "react"
+import { use } from "react";
 
-const Syn=()=>{
-    const [word, setWord]=useState('')
-    const [syn,setSyn]=useState([])
 
-    const handleSubmit=async(e)=>{
-      e.preventDefault();                // Fix typo
-  
-    const response = await fetch(`https://api.datamuse.com/words?rel_syn=${word}`);
-    const data = await response.json();  // Call .json()
-    console.log(data);
-    }
+const BASEURL = "https://api.datamuse.com/words?rel_syn=";
+
+const FindSyn=()=>{
+  const [word,setWord]=useState("")
+  const [synoo,setSynoo]=useState([])
+
+
+  const handleSubmit=(e)=>{
+    e.preventDefault()
+    fetch(`${BASEURL}${word}`)
+    .then((response)=>response.json())
+    .then(setSynoo)
+  }
+  console.log(synoo[0].word)
+
   return (
     <div>
-      <form action="submit">
-        <label htmlFor="word-input">word input</label>
-        <input id={3} onChange={(e) => setWord(e.target.value)} />
-        <button onClick={(e)=>handleSubmit(e)}>submit</button>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="word">your word</label>
+        <br />
+        <br />
+        <input
+          type="text"
+          onChange={(e) => {
+            setWord(e.target.value);
+          }}
+        />
+        <br />
+        <br />
+        <button type="submit">submit</button>
       </form>
+      <ul>
+        {synoo.map((synon)=>(
+          <li key={synon.word}>{synon.word}</li>
+        ))}
+      </ul>
     </div>
   );
 }
 
 
-export default Syn
+export default FindSyn
