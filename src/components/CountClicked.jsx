@@ -4,7 +4,7 @@ const CountClicked = () => {
     const[count, setCount] = useState(0)
 
    const  handleClick=()=>{
-        setCount(c=>c+1)
+        setCount((c) => c + 1);
     }
 
     const handleUnclick=()=>{
@@ -12,6 +12,10 @@ const CountClicked = () => {
             setCount(c=>c-1)
         }
     }
+
+    const array=[1,2,3,4,5]
+    const shuffled=[...array].sort(()=>Math.random()-0.5)
+    console.log(shuffled)
 
   return (
     <div>

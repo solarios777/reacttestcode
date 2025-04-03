@@ -15,7 +15,6 @@ const FindSyn=()=>{
     .then((response)=>response.json())
     .then(setSynoo)
   }
-  console.log(synoo[0].word)
 
   return (
     <div>
