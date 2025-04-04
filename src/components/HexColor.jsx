@@ -11,25 +11,59 @@ const generateRandomHexColor=()=>{
 }
 
 const HexColorGame=()=>{
-     const [color, setColor]=useState()
-    const handleColor=()=>{
-        const result=generateRandomHexColor()
-        setColor(result)
+    const [correctColor, setCorrectColor]=useState(generateRandomHexColor())
+    const [options, setOptions]=useState([])
+    const [feedBack, setFeedBack]=useState()
+
+    const generateNewGame=()=>{
+        const newColor=generateRandomHexColor()
+        const wrongColors=[generateRandomHexColor(),generateRandomHexColor()]
+        const Shuffled=[...wrongColors,newColor].sort(()=>Math.random()-0.5)
+
+        setCorrectColor(newColor)
+        setOptions(Shuffled)
     }
 
-    useEffect(()=>{
-        handleColor()
-    },[])
+    
+    const handleGuess=(color)=>{
+        if(color===correctColor){
+            generateNewGame()
+        }
+    }
+    if(options.length===0)generateNewGame()
+    
 
-    return (
-      <div
-        style={{
-          backgroundColor: color,
-        }}
-      >
-        {color}
-      </div>
-    );
+
+        return (
+          <div>
+            <div
+            //   style={{
+            //     backgroundColor: correctColor,
+            //     width: "200px",
+            //     height: "200px",
+            //   }}
+            >
+              {correctColor}
+            </div>
+
+            <div>
+              {options.map((color) => (
+                <button
+                  value={color}
+                  onClick={(e) => handleGuess(e.target.value)}
+                  style={{
+                    backgroundColor: color,
+                    width: "100px",
+                        height: "100px",
+                  }}
+                >
+                  {/* {color} */}
+                </button>
+              ))}
+            </div>
+          </div>
+        );
 }
+
 
 export default HexColorGame
