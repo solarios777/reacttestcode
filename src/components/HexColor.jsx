@@ -1,68 +1,62 @@
-import react, { useEffect, useState } from "react"
+import react, { useState } from "react"
 
 const generateRandomHexColor=()=>{
-    const options='0123456789ABCDEF'
-    let color='#'
-    for (let i=0; i<6; i++){
-        color+=options[Math.floor(Math.random()*16)]
-    }
-    
-    return color
+  const letters='0123456789ABCDEF'
+  let color='#'
+  for (let i=0; i<6; i++){
+    color+=letters[Math.floor(Math.random()*16)]
+  }
+  return color
 }
 
 const HexColorGame=()=>{
-    const [correctColor, setCorrectColor]=useState(generateRandomHexColor())
-    const [options, setOptions]=useState([])
-    const [feedBack, setFeedBack]=useState()
+  const [correctColor,setCorrectColor]=useState(generateRandomHexColor())
+  const [options, setOptions]=useState([])
+  const [fedBack , setFedBack]=useState(null)
 
-    const generateNewGame=()=>{
-        const newColor=generateRandomHexColor()
-        const wrongColors=[generateRandomHexColor(),generateRandomHexColor()]
-        const Shuffled=[...wrongColors,newColor].sort(()=>Math.random()-0.5)
+  const generateNewGame=()=>{
 
-        setCorrectColor(newColor)
-        setOptions(Shuffled)
+    const newColor=generateRandomHexColor()
+    const wrongColors=[generateRandomHexColor(),generateRandomHexColor()]
+    const shuffled=[...wrongColors,newColor].sort(()=>Math.random()-0.5)
+
+    setCorrectColor(newColor)
+    setOptions(shuffled)
+    setFedBack(null)
+
+  }
+
+  const handleGuess=(color)=>{
+    if(color===correctColor){
+      generateNewGame()
     }
+    else{setFedBack(color)}
+  }
 
-    
-    const handleGuess=(color)=>{
-        if(color===correctColor){
-            generateNewGame()
-        }
-    }
-    if(options.length===0)generateNewGame()
-    
+  if(options.length===0)generateNewGame()
 
 
-        return (
-          <div>
-            <div
-            //   style={{
-            //     backgroundColor: correctColor,
-            //     width: "200px",
-            //     height: "200px",
-            //   }}
-            >
-              {correctColor}
-            </div>
+    return(
+      <div>
+        <div style={{
+          backgroundColor:correctColor,
+          width:"150px",
+          height:"150px"
+        }}>
 
-            <div>
-              {options.map((color) => (
-                <button
-                  value={color}
-                  onClick={(e) => handleGuess(e.target.value)}
-                  style={{
-                    backgroundColor: color,
-                    width: "100px",
-                        height: "100px",
-                  }}
-                >
-                  {/* {color} */}
-                </button>
-              ))}
-            </div>
-          </div>
-        );
+        </div>
+        <div>
+          {options.map((color)=>(
+            <button value={color} onClick={(e)=>handleGuess(e.target.value)}  style={{
+              backgroundColor:fedBack===color?"red":""
+            }}>
+              {color}
+            </button>
+          ))}
+        </div>
+      </div>
+    )
+
 }
 
 
