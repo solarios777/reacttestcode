@@ -29,9 +29,23 @@ const TextAnalizer=()=>{
          const sentences=text.split(/[.?!\n]+/).filter(s=>s.trim().length>0).length
          const paragraph=text.split(/\n+/).filter(p=>p.trim().length>0).length
 
+        const wordArray=text.split(/\s+/).map(w=>w.replace(/[^a-zA-Z]/g,'')).filter(w=>w)
+        const largestword=wordArray.reduce((a,b)=>a.length>b.length?a:b,'')
 
-        const largestword=text.split(/\s+/).map(w=>w.replace(/[^a-zA-Z]/g,'')).filter(w=>w).reduce((a,b)=>a.length>b.length?a:b,'')
 
+       const wordCount={}
+       wordArray.forEach(word=>{
+        const lowWord=word.toLowerCase()
+        wordCount[lowWord]=(wordCount[lowWord]||0)+1
+       })
+
+
+       const frequentWord=Object.entries(wordCount)
+
+       console.log(wordCount);
+       console.log(frequentWord);
+        
+        console.log(wordCount)
          setStats({
            char,
            words,
