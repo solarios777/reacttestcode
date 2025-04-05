@@ -10,10 +10,24 @@ const TextAnalizer=()=>{
     sentences:0,
     paragraphs:0,
     longestWord:"",
-    frequentWord:""
+    frequentWord:"",
+    numPronoun:0
 
   })
-
+const pronouns = [
+  "i",
+  "you",
+  "he",
+  "she",
+  "it",
+  "we",
+  "they",
+  "me",
+  "him",
+  "her",
+  "us",
+  "them",
+];
   // use useEffect to change the values of the stats as the text changes
   useEffect(()=>{
     // check the availability of the text
@@ -27,7 +41,8 @@ const TextAnalizer=()=>{
         sentences: 0,
         paragraphs: 0,
         longestWord:"",
-        frequentWord:""
+        frequentWord:"",
+        numPronoun:0
       });
       return
     }
@@ -55,13 +70,21 @@ const TextAnalizer=()=>{
 
       const frequentWord=Object.entries(wordCount).reduce((a,b)=>a[1]>b[1]?a:b,['',0])
 
+
+      // number of pronouns
+      const numPronoun = wordArray.filter((word) => {
+        const lowerWord = word.toLowerCase(); // Step 1: Convert to lowercase
+        return pronouns.includes(lowerWord); // Step 2: Check if pronoun exists
+      }).length;
+
     setStats({
       chars,
       words,
       sentences,
       paragraphs,
       longestWord,
-      frequentWord
+      frequentWord,
+      numPronoun
     })
     
   },[text])
@@ -105,8 +128,11 @@ const TextAnalizer=()=>{
           </li>
           <li>
             <strong>frequent Word:</strong>
-            <b>{stats.frequentWord[0]}</b>-
-            <b>{stats.frequentWord[1]}</b>
+            <b>{stats.frequentWord[0]}</b>-<b>{stats.frequentWord[1]}</b>
+          </li>
+          <li>
+            <strong>pronouns:</strong>
+            <b>{stats.numPronoun}</b>
           </li>
         </ul>
       </div>
