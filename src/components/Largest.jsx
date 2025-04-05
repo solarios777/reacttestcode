@@ -6,7 +6,8 @@ const TextAnalizer=()=>{
         char:0,
         words:0,
         sentences:0,
-        paragraph:0
+        paragraph:0,
+        longestWord:""
     })
 
     useEffect(()=>{
@@ -17,21 +18,27 @@ const TextAnalizer=()=>{
              words: 0,
              sentences: 0,
              paragraph: 0,
+             longestWord:""
+
            });
            return;
          }
 
          const char=text.length
          const words=text.trim()===''?0:text.trim().split(/\s+/).length
-         const sentences=text.split(/[.?!]+/).filter(s=>s.trim().length>0).length
+         const sentences=text.split(/[.?!\n]+/).filter(s=>s.trim().length>0).length
          const paragraph=text.split(/\n+/).filter(p=>p.trim().length>0).length
 
+
+        const largestword=text.split(/\s+/).map(w=>w.replace(/[^a-zA-Z]/g,'')).filter(w=>w).reduce((a,b)=>a.length>b.length?a:b,'')
+
          setStats({
-            char,
-            words,
-            sentences,
-            paragraph
-         })
+           char,
+           words,
+           sentences,
+           paragraph,
+           longestWord: largestword,
+         });
     },[text])
 
     return (
@@ -39,8 +46,8 @@ const TextAnalizer=()=>{
         <textarea
           onChange={(e) => setText(e.target.value)}
           style={{
-            alignItems:"center",
-            justifyContent:"center",
+            alignItems: "center",
+            justifyContent: "center",
             width: "600px",
             minHeight: "100px",
           }}
@@ -65,6 +72,10 @@ const TextAnalizer=()=>{
             <li>
               <strong>paragraphs:</strong>
               <b>{stats.paragraph}</b>
+            </li>
+            <li>
+              <strong>longest word:</strong>
+              <b>{stats.longestWord}</b>
             </li>
           </ul>
         </div>
